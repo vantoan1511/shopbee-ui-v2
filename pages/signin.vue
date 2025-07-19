@@ -49,7 +49,7 @@
         <Button type="submit" :icon="PrimeIcons.SIGN_IN" label="Sign in" severity="success" rounded/>
       </Form>
       <Button label="Dont have any account? Create one!" variant="link" size="small" rounded/>
-      <Button :icon="PrimeIcons.MOON" severity="secondary" @click="toggleDarkMode()"/>
+      <Button :icon="toggleDarkModeIcon" severity="secondary" @click="toggleDarkMode()"/>
     </div>
     <Toast/>
   </div>
@@ -96,8 +96,33 @@ const onFormSubmit = ({valid, values}: FormSubmitEvent) => {
   }
 };
 
+const toggleDarkModeIcon = ref(PrimeIcons.MOON);
 const toggleDarkMode = () => {
-  document.documentElement.classList.toggle('app-dark');
+  if (localStorage.getItem('theme') === 'dark') {
+    setTheme('light')
+  } else {
+    setTheme('dark')
+  }
 };
+
+const setTheme = (theme: string) => {
+  if (theme === 'dark') {
+    document.documentElement.classList.add(`app-dark`);
+    toggleDarkModeIcon.value = PrimeIcons.SUN;
+  } else {
+    document.documentElement.classList.remove(`app-dark`);
+    toggleDarkModeIcon.value = PrimeIcons.MOON;
+  }
+  localStorage.setItem('theme', theme);
+};
+
+const getMediaPreference = () => {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
+onMounted(() => {
+  setTheme(localStorage.getItem('theme') || getMediaPreference());
+})
+
 </script>
         
