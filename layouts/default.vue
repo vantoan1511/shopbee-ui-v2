@@ -54,7 +54,7 @@
                 v-slot="slotProps"
                 severity="success"
                 class="shadow-sm">
-          <RouterLink to="/login" :class="slotProps.class" class="font-semibold">
+          <RouterLink to="/pages/signin" :class="slotProps.class" class="font-semibold">
             <i class="pi pi-sign-in mr-2"></i>Login
           </RouterLink>
         </Button>

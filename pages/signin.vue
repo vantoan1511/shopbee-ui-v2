@@ -1,12 +1,19 @@
 <template>
-  <div class="min-h-dvh bg-gray-100 flex items-center justify-center">
-    <div class="md:px-10 px-5 md:py-5 py-3 flex justify-center items-center flex-col shadow rounded-2xl bg-white">
-      <h3 class="px-3 py-3 text-2xl font-bold text-center text-primary">Login</h3>
+  <div class="h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div
+        class="flex justify-center items-center flex-col space-y-2 p-5 md:shadow-lg rounded-2xl bg-white dark:bg-gray-800">
+      <h3 class="px-3 py-3 text-2xl font-bold text-primary">Sign in</h3>
+      <Button icon="pi pi-google" label="Sign in with Google" severity="secondary" fluid></Button>
+      <Divider type="dashed" align="center" class="mt-1.5">
+        <p class="text-sm text-muted-color">Or</p>
+      </Divider>
       <Form v-slot="$form"
             :resolver="resolver"
             :initial-values="initialValues"
             @submit="onFormSubmit"
             class="flex flex-col gap-4 md:px-0  p-5 w-full md:w-sm">
+        <Message v-if="loginFailure" severity="error" icon="pi pi-bell" size="small">Username/password incorrect!
+        </Message>
         <div class="flex flex-col gap-1">
           <FloatLabel variant="on">
             <InputText fluid
@@ -22,7 +29,7 @@
         </div>
         <div class="flex flex-col gap-1">
           <FloatLabel variant="on">
-            <InputText name="password" type="password" fluid autocomplete="shopbee"/>
+            <Password :feedback="false" name="password" fluid toggleMask/>
             <label for="password">Password</label>
           </FloatLabel>
           <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">
@@ -39,9 +46,10 @@
             <Button label="Forgot password?" variant="link" size="small" rounded/>
           </div>
         </div>
-        <Button type="submit" label="Login" severity="success" rounded/>
+        <Button type="submit" :icon="PrimeIcons.SIGN_IN" label="Sign in" severity="success" rounded/>
       </Form>
       <Button label="Dont have any account? Create one!" variant="link" size="small" rounded/>
+      <Button :icon="PrimeIcons.MOON" severity="secondary" @click="toggleDarkMode()"/>
     </div>
     <Toast/>
   </div>
@@ -52,13 +60,12 @@ import {ref} from 'vue';
 import {Form, type FormSubmitEvent} from '@primevue/forms';
 import {zodResolver} from '@primevue/forms/resolvers/zod';
 import {z} from 'zod';
-import {useToast} from 'primevue/usetoast';
+import {PrimeIcons} from "@primevue/core";
 
 definePageMeta({
   layout: 'login'
 })
 
-const toast = useToast();
 const router = useRouter();
 
 const rememberMe = ref(false);
@@ -75,16 +82,22 @@ const resolver = ref(zodResolver(
     })
 ));
 
+const loginFailure = ref(false);
+
 const onFormSubmit = ({valid, values}: FormSubmitEvent) => {
   if (valid) {
     if (values.username === 'shopbee' && values.password === 'shopbee') {
       router.push('/dashboard');
     } else {
-      toast.add({severity: 'error', summary: 'Invalid credentials.', life: 3000});
+      loginFailure.value = true;
     }
   } else {
     console.log('Login form is invalid');
   }
+};
+
+const toggleDarkMode = () => {
+  document.documentElement.classList.toggle('app-dark');
 };
 </script>
         

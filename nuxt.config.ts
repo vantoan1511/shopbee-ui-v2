@@ -22,7 +22,8 @@ export default defineNuxtConfig({
     },
     nitro: {
         routeRules: {
-            '/': {prerender: true}
+            '/': {prerender: true},
+            '/signin': {ssr: false},
         },
     },
     primevue: {
