@@ -1,6 +1,6 @@
 <template>
   <div>
-    Dashboard
+    <SbSideBarItem path="/settings" label="Settings" icon="pi pi-cog" :icon-only="false"/>
   </div>
 </template>
 
