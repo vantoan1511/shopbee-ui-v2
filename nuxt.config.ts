@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     css: [
         '~/assets/css/main.css'
     ],
-    modules: ['@primevue/nuxt-module'],
+    modules: ['@primevue/nuxt-module', '@nuxtjs/color-mode'],
     vite: {
         plugins: [
             tailwindcss(),
@@ -23,8 +23,8 @@ export default defineNuxtConfig({
     nitro: {
         routeRules: {
             '/': {prerender: true},
-            '/login': {ssr: true},
-            '/dashboard': {ssr: true, swr: 3600}
+            '/signin': {ssr: false},
+            '/signup': {ssr: false},
         },
     },
     primevue: {
@@ -42,6 +42,14 @@ export default defineNuxtConfig({
             },
         },
     },
+    colorMode: {
+        preference: 'system',
+        fallback: 'light',
+        storageKey: 'theme',
+        classPrefix: 'app-',
+        classSuffix: '',
+        storage: 'localStorage'
+    }
     // openidConnect: {
     //     addPlugin: true,
     //     op: {
