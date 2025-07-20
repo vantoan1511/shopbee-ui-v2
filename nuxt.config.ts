@@ -24,6 +24,7 @@ export default defineNuxtConfig({
         routeRules: {
             '/': {prerender: true},
             '/signin': {ssr: false},
+            '/signup': {ssr: false},
         },
     },
     primevue: {
